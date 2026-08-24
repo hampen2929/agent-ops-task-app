@@ -3,7 +3,7 @@
 name: Issue Triage
 on:
   issues:
-    types: [opened]
+    types: [opened, reopened]
 
 permissions:
   contents: read # 読み取りのみ
@@ -26,14 +26,21 @@ jobs:
           npm install -g @anthropic-ai/claude-code
           printf '%s' "$ISSUE_BODY" > /tmp/issue.txt
 
+          set +e
           claude --bare -p "$(cat .github/prompts/triage.md)" \
             --allowedTools "Read,Grep,Glob" \
             --permission-mode dontAsk \
             --output-format json --max-budget-usd 0.30 \
             --json-schema "$(cat .github/schemas/issue-triage-schema.json)" \
-            > /tmp/out.json
-          test "$(jq -r '.is_error' /tmp/out.json)" != "true" || {
-            echo "::error::ジョブ内で失敗: $(jq -r '.result' /tmp/out.json)"; exit 1; }
+            > /tmp/out.json 2> /tmp/claude-err.txt
+          code=$?
+          set -e
+          if [ "$code" -ne 0 ] || [ "$(jq -r '.is_error' /tmp/out.json 2>/dev/null)" = "true" ]; then
+            echo "::error::claude実行が失敗 (exit $code)。stderr と出力を以下に表示"
+            echo "--- stderr ---"; cat /tmp/claude-err.txt
+            echo "--- stdout(out.json) ---"; cat /tmp/out.json
+            exit 1
+          fi
 
       # 投稿はワークフロー側が行う（エージェントに投稿権限を与えない）
       - name: Post comment
