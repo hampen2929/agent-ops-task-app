@@ -3,7 +3,7 @@
 [![Nightly Triage](https://github.com/hampen2929/agent-ops-task-app/actions/workflows/nightly-triage.yml/badge.svg)](https://github.com/hampen2929/agent-ops-task-app/actions/workflows/nightly-triage.yml) [![Nightly Typefix](https://github.com/hampen2929/agent-ops-task-app/actions/workflows/nightly-typefix.yml/badge.svg)](https://github.com/hampen2929/agent-ops-task-app/actions/workflows/nightly-typefix.yml)
 
 AIエージェント（Claude Code）をCI/CDに組み込み、無人で運用するためのリファレンス実装です。
-Zenn本『Claude Code本番運用ガイド — CI/CDに組み込む自律エージェント設計』（刊行予定: https://zenn.dev/hampen2929/books/claude-code-production-guide ）の最終章で、このリポジトリを通しで解説しています。
+Zenn本『Claude Code本番運用ガイド — CI/CDに組み込む自律エージェント設計』（ https://zenn.dev/hampen2929/books/claude-code-production-guide ）の最終章で、このリポジトリを通しで解説しています。
 
 題材は架空のタスク管理アプリ（TypeScript・ランタイム依存ゼロ）。アプリはあえて平凡に作ってあります。主役はアプリではなく、それを取り囲むエージェント運用の仕組みです。
 
