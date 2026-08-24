@@ -11,6 +11,9 @@ permissions:
 
 jobs:
   triage:
+    # コスト防御: 公開リポジトリでは誰でもIssueを開けるため、AI実行は
+    # オーナー・コラボレーターのIssueに限定する（フォーク先では外してよい）
+    if: contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association)
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
