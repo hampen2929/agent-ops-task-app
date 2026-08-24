@@ -1,0 +1,25 @@
+# 決定的な検証ゲート（型・テスト・lint）— PRとmainへのpushで回す
+# 『Claude Code本番運用ガイド』「自律修正ループの設計」の章:
+# 合否を決めるのはAIの自己申告ではなく、この検証の終了コード
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - run: npm ci
+      - name: Typecheck
+        run: npx tsc --noEmit
+      - name: Test
+        run: npx vitest run
+      - name: Lint
+        run: npx eslint .

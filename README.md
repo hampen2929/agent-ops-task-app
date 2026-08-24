@@ -1,6 +1,6 @@
 # agent-ops-task-app
 
-[![Nightly Triage](https://github.com/hampen2929/agent-ops-task-app/actions/workflows/nightly-triage.yml/badge.svg)](https://github.com/hampen2929/agent-ops-task-app/actions/workflows/nightly-triage.yml) [![Nightly Typefix](https://github.com/hampen2929/agent-ops-task-app/actions/workflows/nightly-typefix.yml/badge.svg)](https://github.com/hampen2929/agent-ops-task-app/actions/workflows/nightly-typefix.yml)
+[![CI](https://github.com/hampen2929/agent-ops-task-app/actions/workflows/ci.yml/badge.svg)](https://github.com/hampen2929/agent-ops-task-app/actions/workflows/ci.yml) [![Nightly Triage](https://github.com/hampen2929/agent-ops-task-app/actions/workflows/nightly-triage.yml/badge.svg)](https://github.com/hampen2929/agent-ops-task-app/actions/workflows/nightly-triage.yml) [![Nightly Typefix](https://github.com/hampen2929/agent-ops-task-app/actions/workflows/nightly-typefix.yml/badge.svg)](https://github.com/hampen2929/agent-ops-task-app/actions/workflows/nightly-typefix.yml)
 
 AIエージェント（Claude Code）をCI/CDに組み込み、無人で運用するためのリファレンス実装です。
 Zenn本『Claude Code本番運用ガイド — CI/CDに組み込む自律エージェント設計』（ https://zenn.dev/hampen2929/books/claude-code-production-guide ）の最終章で、このリポジトリを通しで解説しています。
