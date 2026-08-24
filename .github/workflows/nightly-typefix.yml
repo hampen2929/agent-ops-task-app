@@ -98,9 +98,8 @@ jobs:
           git config user.email "nightly-typefix@users.noreply.github.com"
           git checkout -b "$branch"
           git add -A
-          git commit -m "fix: 夜間ジョブによる型エラー修正
-
-Co-Authored-By: nightly-typefix <nightly-typefix@users.noreply.github.com>"
+          git commit -m "fix: 夜間ジョブによる型エラー修正" \
+            -m "Co-Authored-By: nightly-typefix <nightly-typefix@users.noreply.github.com>"
           git push origin "$branch"
 
           {
