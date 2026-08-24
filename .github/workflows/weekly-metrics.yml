@@ -1,0 +1,28 @@
+# 受理率・コストの週次レポート（AIは登場しない — 計器は決定的なスクリプトで）
+# 『Claude Code本番運用ガイド』「品質評価」「コスト管理」の章
+name: Weekly Metrics
+on:
+  schedule:
+    - cron: "0 0 * * 1" # 月曜 9:00 JST
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  metrics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - name: Collect
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo "## AI運用 週次メトリクス"
+            ./scripts/weekly-metrics.sh
+            echo ""
+            echo "コストは各ジョブのサマリーの cost_usd 行を集計する"
+          } >> "$GITHUB_STEP_SUMMARY"

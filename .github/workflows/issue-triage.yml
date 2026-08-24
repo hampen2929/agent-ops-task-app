@@ -1,0 +1,44 @@
+# Issueの安全なトリアージ（読み取り専用・シークレット隔離）
+# 『Claude Code本番運用ガイド』「セキュリティ」の章
+name: Issue Triage
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read # 読み取りのみ
+  issues: write # コメント投稿だけに必要
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - run: npm ci
+
+      - name: Triage
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Issue本文は「データ」として環境変数経由でファイルに落とし、プロンプトに直接混ぜない
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          npm install -g @anthropic-ai/claude-code
+          printf '%s' "$ISSUE_BODY" > /tmp/issue.txt
+
+          claude --bare -p "$(cat .github/prompts/triage.md)" \
+            --allowedTools "Read,Grep,Glob" \
+            --permission-mode dontAsk \
+            --output-format json --max-budget-usd 0.30 \
+            --json-schema "$(cat .github/schemas/issue-triage-schema.json)" \
+            > /tmp/out.json
+          test "$(jq -r '.is_error' /tmp/out.json)" != "true" || {
+            echo "::error::ジョブ内で失敗: $(jq -r '.result' /tmp/out.json)"; exit 1; }
+
+      # 投稿はワークフロー側が行う（エージェントに投稿権限を与えない）
+      - name: Post comment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          jq -r '.structured_output.comment' /tmp/out.json | \
+            gh issue comment ${{ github.event.issue.number }} --body-file -

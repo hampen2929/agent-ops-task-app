@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "properties": {
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "観点ID（例: SEC-01）" },
+          "file": { "type": "string" },
+          "line": { "type": "integer" },
+          "severity": { "enum": ["low", "medium", "high", "critical"] },
+          "comment": { "type": "string", "description": "指摘内容と修正の方向性" },
+          "dismissed": { "type": "boolean", "description": "例外合意によりdismissされた指摘か" }
+        },
+        "required": ["id", "file", "line", "severity", "comment", "dismissed"]
+      }
+    },
+    "summary": { "type": "string", "description": "レビュー全体の要約（1〜3文）" }
+  },
+  "required": ["findings", "summary"]
+}

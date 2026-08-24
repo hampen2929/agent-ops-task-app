@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "properties": {
+    "summary": { "type": "string", "description": "全体状況の要約(1〜2文)" },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "file": { "type": "string" },
+          "cause": { "type": "string", "description": "失敗の原因" },
+          "suggestion": { "type": "string", "description": "修正の方向性" }
+        },
+        "required": ["file", "cause", "suggestion"]
+      }
+    }
+  },
+  "required": ["summary", "findings"]
+}

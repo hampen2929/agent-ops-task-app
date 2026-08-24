@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "properties": {
+    "comment": {
+      "type": "string",
+      "description": "Issueに投稿するコメント本文(Markdown)。原因の見立て・根拠(ファイルと行)・確認すべき点を含む"
+    },
+    "needs_more_info": {
+      "type": "boolean",
+      "description": "再現手順など情報不足で見立てが立てられない場合 true"
+    }
+  },
+  "required": ["comment", "needs_more_info"]
+}

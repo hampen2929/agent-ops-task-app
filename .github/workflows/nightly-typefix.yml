@@ -1,0 +1,116 @@
+# 型エラーの自律修正ループ（検出→修正→検証→PR）
+# 『Claude Code本番運用ガイド』「自律修正ループの設計」「ガードレール」の章
+name: Nightly Typefix
+on:
+  schedule:
+    - cron: "30 18 * * *" # JST 3:30
+  workflow_dispatch: {}
+
+concurrency:
+  group: nightly-typefix
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  typefix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+
+      - run: npm ci
+
+      # 段1: 検出 — 決定的な道具で
+      - name: Detect
+        id: detect
+        run: |
+          set +e
+          npx tsc --noEmit > /tmp/tsc-full.log 2>&1
+          echo "typecheck=$?" >> "$GITHUB_OUTPUT"
+          head -60 /tmp/tsc-full.log > /tmp/errors.txt
+
+      - name: Nothing to do
+        if: steps.detect.outputs.typecheck == '0'
+        run: echo "検出0件。今夜は何もしない" >> "$GITHUB_STEP_SUMMARY"
+
+      # 冪等性: 同名ブランチが既にあれば終了
+      - name: Check existing branch
+        id: dedupe
+        if: steps.detect.outputs.typecheck != '0'
+        run: |
+          branch="nightly/typefix-$(date +%Y%m%d)"
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+          if git ls-remote --exit-code origin "$branch" > /dev/null 2>&1; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "既にブランチあり。終了" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      # 段3: 修正 — 書き込みは最小権限で
+      - name: Fix
+        if: steps.detect.outputs.typecheck != '0' && steps.dedupe.outputs.skip != 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          npm install -g @anthropic-ai/claude-code
+          claude --bare -p "$(cat .github/prompts/typefix.md)" \
+            --permission-mode acceptEdits \
+            --allowedTools "Read,Grep,Glob,Edit,Bash(npx tsc *)" \
+            --output-format json \
+            --max-budget-usd 1.00 \
+            --json-schema "$(cat .github/schemas/typefix-schema.json)" \
+            > /tmp/fix.json || { echo "::error::claude実行が失敗"; exit 1; }
+          test "$(jq -r '.is_error' /tmp/fix.json)" != "true" || {
+            echo "::error::ジョブ内で失敗: $(jq -r '.result' /tmp/fix.json)"; exit 1; }
+
+      # 段4: 検証 — 範囲チェック + 変更量上限 + 全体再実行
+      - name: Verify
+        if: steps.detect.outputs.typecheck != '0' && steps.dedupe.outputs.skip != 'true'
+        run: |
+          if git diff --name-only | grep -E '^(\.github/|\.claude/|package|tsconfig|eslint|.*\.test\.ts$)'; then
+            echo "::error::想定外のファイルが変更された。破棄する"
+            git checkout -- .
+            exit 1
+          fi
+          changed_files=$(git diff --name-only | wc -l)
+          changed_lines=$(git diff --numstat | awk '{s+=$1+$2} END {print s+0}')
+          if [ "$changed_files" -gt 10 ] || [ "$changed_lines" -gt 300 ]; then
+            echo "::error::変更量が上限を超過（${changed_files}ファイル/${changed_lines}行）。破棄する"
+            git checkout -- .
+            exit 1
+          fi
+          npx tsc --noEmit && npx vitest run && npx eslint .
+
+      # 段5: 出口 — PR（作成はワークフロー側。エージェントにgit権限はない）
+      - name: Create PR
+        if: steps.detect.outputs.typecheck != '0' && steps.dedupe.outputs.skip != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet; then
+            echo "修正なし（全件skip）。詳細:" >> "$GITHUB_STEP_SUMMARY"
+            jq -r '.structured_output.skipped[] | "- \(.file): \(.reason)"' /tmp/fix.json >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          branch="${{ steps.dedupe.outputs.branch }}"
+          git config user.name "nightly-typefix[bot]"
+          git config user.email "nightly-typefix@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add -A
+          git commit -m "fix: 夜間ジョブによる型エラー修正
+
+Co-Authored-By: nightly-typefix <nightly-typefix@users.noreply.github.com>"
+          git push origin "$branch"
+
+          {
+            echo "## 夜間ジョブ: 型エラーの自律修正"
+            echo "- 修正: $(jq '.structured_output.fixed | length' /tmp/fix.json)件 / skip: $(jq '.structured_output.skipped | length' /tmp/fix.json)件"
+            echo "- 検証: tsc / vitest / eslint 全パス"
+            echo "- コスト: \$$(jq -r '.total_cost_usd' /tmp/fix.json)"
+            echo ""
+            echo "### skipした項目"
+            jq -r '.structured_output.skipped[] | "- \(.file) — \(.reason)"' /tmp/fix.json
+          } > /tmp/pr-body.md
+          gh pr create --title "夜間: 型エラーの自律修正 $(date +%Y-%m-%d)" \
+            --body-file /tmp/pr-body.md --label ai-generated

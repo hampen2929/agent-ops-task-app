@@ -1,0 +1,65 @@
+# 夜間の一次調査（読み取り専用）— 最初に置くジョブ
+# 『Claude Code本番運用ガイド』「ヘッドレス実行の基礎」の章
+name: Nightly Triage
+on:
+  schedule:
+    - cron: "0 18 * * *" # JST 3:00
+  workflow_dispatch: {}
+
+concurrency:
+  group: nightly-triage
+
+permissions:
+  contents: read
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+
+      - run: npm ci
+
+      - name: Run checks
+        id: checks
+        run: |
+          set +e
+          npx tsc --noEmit > /tmp/typecheck.log 2>&1
+          echo "typecheck=$?" >> "$GITHUB_OUTPUT"
+          npx vitest run > /tmp/test.log 2>&1
+          echo "test=$?" >> "$GITHUB_OUTPUT"
+
+      - name: All green
+        if: steps.checks.outputs.typecheck == '0' && steps.checks.outputs.test == '0'
+        run: echo "チェック全て成功。今夜は何もしない" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Triage failures
+        if: steps.checks.outputs.typecheck != '0' || steps.checks.outputs.test != '0'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          npm install -g @anthropic-ai/claude-code
+
+          claude --bare -p "$(cat .github/prompts/nightly-triage.md)" \
+            --allowedTools "Read,Grep,Glob" \
+            --permission-mode dontAsk \
+            --output-format json \
+            --max-budget-usd 0.50 \
+            --json-schema "$(cat .github/schemas/triage-schema.json)" \
+            > /tmp/triage.json || { echo "::error::claude実行が失敗"; exit 1; }
+
+          if [ "$(jq -r '.is_error' /tmp/triage.json)" = "true" ]; then
+            echo "::error::ジョブ内で失敗: $(jq -r '.result' /tmp/triage.json)"
+            exit 1
+          fi
+
+          {
+            echo "## 夜間チェックの一次調査"
+            jq -r '.structured_output.summary' /tmp/triage.json
+            echo ""
+            jq -r '.structured_output.findings[]
+              | "- **\(.file)**: \(.cause) — \(.suggestion)"' /tmp/triage.json
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          echo "cost_usd=$(jq -r '.total_cost_usd' /tmp/triage.json)"

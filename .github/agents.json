@@ -1,0 +1,20 @@
+{
+  "planner": {
+    "description": "型エラーの修正計画を立てる。修正はしない",
+    "prompt": "渡された型エラーについて関連コードを読み、エラーごとに修正計画（対象ファイル・変更内容・理由）か、直せない理由を出力する。禁止事項: テスト・設定変更を計画に含めること",
+    "tools": ["Read", "Grep", "Glob"],
+    "maxTurns": 30
+  },
+  "fixer": {
+    "description": "計画に従って修正する。計画にない変更はしない",
+    "prompt": "渡された修正計画を実施する。計画にないファイルには触れない。修正ごとに npx tsc --noEmit で確認してよい",
+    "tools": ["Read", "Edit", "Bash(npx tsc *)"],
+    "maxTurns": 40
+  },
+  "reviewer": {
+    "description": "差分をレビュー観点と照らして所見を返す。修正はしない",
+    "prompt": ".github/prompts/review.md の手順に従い、レビュー観点のみに基づいて指摘を出力する。観点にない指摘はしない",
+    "tools": ["Read", "Grep", "Glob"],
+    "maxTurns": 30
+  }
+}

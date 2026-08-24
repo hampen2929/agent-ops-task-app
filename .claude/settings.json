@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "deny": [
+      "Edit(~/.ssh/**)",
+      "Edit(~/.aws/**)",
+      "Edit(~/.config/**)",
+      "Read(~/.ssh/id_*)",
+      "Read(.env*)",
+      "Read(**/*.pem)",
+      "Read(**/secrets/**)",
+      "Bash(env)",
+      "Bash(printenv *)",
+      "Bash(git push --force *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/block-outside-writes.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "agent-ops-task-app",
+  "version": "0.1.0",
+  "private": true,
+  "description": "『Claude Code本番運用ガイド』リファレンス実装 — AIエージェントをCI/CDで無人運用するサンプル（架空のタスク管理アプリ）",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "lint": "eslint .",
+    "start": "node --experimental-strip-types src/server.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "eslint": "^9.0.0",
+    "typescript": "^5.5.0",
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^3.0.0"
+  }
+}

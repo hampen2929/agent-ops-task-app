@@ -1,0 +1,30 @@
+{
+  "type": "object",
+  "properties": {
+    "fixed": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "file": { "type": "string" },
+          "error": { "type": "string", "description": "対象のエラー" },
+          "description": { "type": "string", "description": "何をどう直したか" }
+        },
+        "required": ["file", "error", "description"]
+      }
+    },
+    "skipped": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "file": { "type": "string" },
+          "error": { "type": "string" },
+          "reason": { "type": "string", "description": "直さなかった理由" }
+        },
+        "required": ["file", "error", "reason"]
+      }
+    }
+  },
+  "required": ["fixed", "skipped"]
+}
