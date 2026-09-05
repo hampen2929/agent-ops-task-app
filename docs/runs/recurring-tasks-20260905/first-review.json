@@ -1,0 +1,19 @@
+{
+  "reviews": [
+    {
+      "id": "PRR_kwDOUCKxBc8AAAABMUEJ9g",
+      "author": {
+        "login": "github-actions"
+      },
+      "authorAssociation": "NONE",
+      "body": "## AIレビュー結果\n\n繰り返しタスクと期限リマインドの実装は入力検証（assertDate / validateRecurrence / クエリの正規表現チェック）とテスト網羅が良好で、シークレット直書きや外部入力の無検証使用は見当たりませんでした。指摘は notify.ts のフォールバック用 catch による例外の握りつぶし（ERR-01）、store.ts の新規非nullアサーション（TYPE-01）、新規モジュール recurrence.ts の公開関数のドキュメント欠如（DOC-01）の3件です。リポジトリ内に `ai-review: allow(...)` コメントは存在せず、dismissした指摘はありません。\n\n- **[medium] ERR-01** `src/notify.ts:16` — `try { end = addCalendarDays(today, withinDays); } catch { end = \"9999-12-31\"; }` が catch で例外を一切ログにも再送出にも回さず、無条件にフォールバックしている。日付上限超過以外の例外（addCalendarDays の実装バグや将来の引数検証エラーなど）も同じく握りつぶされ、誤ったウィンドウ終端で静かに処理が続く。エラー種別を判定してから既定値に落とすか、例外に頼らず `epoch(today) + withinDays*DAY_MS` が上限を越えるかを事前判定して clamp する形にしたい。severity: 目安 high → medium に一段下げた。today と withinDays は直前で厳格に検証済みで、現実的に到達する例外が範囲超過に限られ、意図と代替値がコメントで明示されているため。\n- **[medium] TYPE-01** `src/store.ts:31` — `task.anchorDay = Number(dueDate!.slice(8, 10));` で非nullアサーションを新規に追加している。`dueDate` の存在保証は17行目の別ブロックの throw に依存しており、型検査ではなく人間の読解で担保されている。将来ガードが変更されても型検査で検知できず undefined が通る。`if (rule !== undefined)` ブロックを一本化するか、検証直後に `const anchorDueDate: string = dueDate` のようにローカル束縛して `!` を消したい。severity: 目安 high → medium に一段下げた。同一関数内の明示的な throw で不変条件が守られており、現時点で実害の出る経路がないため。\n- **[low] DOC-01** `src/recurrence.ts:12` — 新規モジュールの公開関数 `isValidDate` / `assertDate` / `addCalendarDays` / `validateRecurrence`（12, 20, 28, 38行）に説明コメントがない。いずれも store.ts・notify.ts・server.ts からモジュール外利用されており、特に対応日付範囲が 0001-01-01〜9999-12-31 であることや範囲超過時に例外を投げる契約は呼び出し側の分岐（notify.ts の catch など）に直結するため、`nextDueDate` と同様に一行の役割説明を付けたい。",
+      "submittedAt": "2026-09-05T12:42:26Z",
+      "includesCreatedEdit": false,
+      "reactionGroups": [],
+      "state": "APPROVED",
+      "commit": {
+        "oid": "f0a897dbf7c83d4d4013c3912eda963a5b0cc9c2"
+      }
+    }
+  ]
+}

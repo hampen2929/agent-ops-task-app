@@ -1,0 +1,61 @@
+{
+  "code_commit": "f0a897d",
+  "responses": [
+    {
+      "task": {
+        "id": "8cce4271-ef90-4794-ac5a-aa261fc3f185",
+        "title": "月次レポート",
+        "status": "done",
+        "createdAt": "2026-09-05T12:42:11.218Z",
+        "dueDate": "2026-01-31",
+        "recurrence": {
+          "frequency": "monthly",
+          "interval": 1,
+          "count": 3
+        },
+        "seriesId": "8cce4271-ef90-4794-ac5a-aa261fc3f185",
+        "occurrence": 1,
+        "anchorDay": 31,
+        "completedAt": "2026-09-05T12:42:11.289Z"
+      }
+    },
+    {
+      "tasks": [
+        {
+          "id": "8cce4271-ef90-4794-ac5a-aa261fc3f185",
+          "title": "月次レポート",
+          "status": "done",
+          "createdAt": "2026-09-05T12:42:11.218Z",
+          "dueDate": "2026-01-31",
+          "recurrence": {
+            "frequency": "monthly",
+            "interval": 1,
+            "count": 3
+          },
+          "seriesId": "8cce4271-ef90-4794-ac5a-aa261fc3f185",
+          "occurrence": 1,
+          "anchorDay": 31,
+          "completedAt": "2026-09-05T12:42:11.289Z"
+        },
+        {
+          "id": "5d5f4412-3f3b-4ce1-a507-6c1f32b4f9dc",
+          "title": "月次レポート",
+          "status": "open",
+          "createdAt": "2026-09-05T12:42:11.289Z",
+          "dueDate": "2026-02-28",
+          "recurrence": {
+            "frequency": "monthly",
+            "interval": 1,
+            "count": 3
+          },
+          "seriesId": "8cce4271-ef90-4794-ac5a-aa261fc3f185",
+          "occurrence": 2,
+          "anchorDay": 31
+        }
+      ]
+    },
+    {
+      "digest": "# タスクダイジェスト (2026-02-25)\n- 未完了: 1件\n- 今日が期限: 0件\n- 期限切れ: 0件\n\n## 今後3日以内が期限\n- 月次レポート (期限: 2026-02-28)"
+    }
+  ]
+}
