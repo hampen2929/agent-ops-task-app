@@ -1,0 +1,53 @@
+{
+  "implementation_pr": "https://github.com/hampen2929/agent-ops-task-app/pull/6",
+  "reviewed_head": "ca6e8d3df34b9840eadb5fd176a5f5c2ef8fb045",
+  "merged_commit": "21c4ef3d95a8b84e949585c6e3da121807f09631",
+  "merged_at": "2026-09-05T13:10:21Z",
+  "decision": "accepted",
+  "decided_by": "Codex",
+  "authorization": "依頼者の書籍完成・必要な実装とPRマージの委任",
+  "human_reviewed_each_pr": false,
+  "tests_passed": 70,
+  "existing_tests_unchanged": 9,
+  "checks": [
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-05T13:10:00Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/hampen2929/agent-ops-task-app/actions/runs/33967963713/job/101311310494",
+      "name": "review",
+      "startedAt": "2026-09-05T13:07:07Z",
+      "status": "COMPLETED",
+      "workflowName": "AI Review"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-09-05T13:07:23Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/hampen2929/agent-ops-task-app/actions/runs/33967963725/job/101311310587",
+      "name": "checks",
+      "startedAt": "2026-09-05T13:07:08Z",
+      "status": "COMPLETED",
+      "workflowName": "CI"
+    }
+  ],
+  "final_review": {
+    "id": "PRR_kwDOUCKxBc8AAAABMUHckQ",
+    "author": {
+      "login": "github-actions"
+    },
+    "authorAssociation": "NONE",
+    "body": "## AIレビュー結果\n\nレビュー観点（SEC-01/02, ERR-01, TYPE-01, TEST-01, PERF-01, DOC-01）に照らして差分と周辺コードを確認したが、指摘に該当する箇所は見つからなかった。入力検証は日付・繰り返し規則・クエリ引数のいずれも実装され、前回レビューで挙がった catch の握りつぶし・非nullアサーション・公開関数のドキュメント欠如はすべて解消済みで、振る舞い変更にはテストが伴っている。CIの追加診断も秘密情報や生の応答を出力せず、終了コードを保持したまま失敗を伝播する構成になっている。",
+    "submittedAt": "2026-09-05T13:09:58Z",
+    "includesCreatedEdit": false,
+    "reactionGroups": [],
+    "state": "APPROVED",
+    "commit": {
+      "oid": "ca6e8d3df34b9840eadb5fd176a5f5c2ef8fb045"
+    }
+  },
+  "configured_review_budget_usd": 1.5,
+  "reported_final_review_cost_usd": 0.6424730000000001,
+  "whole_run_cost_usd": null,
+  "production_deployed": false
+}

@@ -58,13 +58,13 @@
 
 | ID | 内容 | 対象ファイル | 依存 |
 |---|---|---|---|
-| T1 | 型定義: `Recurrence` 型、`Task` への `recurrence` / `seriesId` / `anchorDay` 追加 | `src/types.ts` | なし |
-| T2 | 日付計算: `nextDueDate(dueDate, recurrence, anchorDay)` の純関数実装 | `src/recurrence.ts`（新規）+ テスト | T1 |
+| T1 | 型定義: `Recurrence` 型、`Task` への `recurrence` / `seriesId` / `anchorDay` / `occurrence` 追加 | `src/types.ts` | なし |
+| T2 | 日付計算: `nextDueDate(dueDate, recurrence, anchorDay, after)` の純関数実装 | `src/recurrence.ts`（新規）+ テスト | T1 |
 | T3 | ストア: `add()` の `recurrence` 受け入れ、`complete()` 時の次インスタンス生成 | `src/store.ts` + テスト | T1, T2 |
-| T4 | 通知: 「N日以内に期限」セクション | `src/notify.ts` + テスト | T1 |
-| T5 | API: リクエスト検証とレスポンス | `src/server.ts` | T1, T3 |
+| T4 | 通知: 「N日以内に期限」セクション | `src/notify.ts` + テスト | T1, T2 |
+| T5 | API: リクエスト検証とレスポンス | `src/server.ts` + HTTPテスト | T1, T2, T3, T4 |
 
-**T1 が全員のブロッカー**。T1 が確定する前に T2〜T5 を並列で走らせると、型が変わるたびに全員が手戻る。依存上は、T1確定後にT2とT4を並列化できる。実走で実際に使った編成と順序は `docs/runs/recurring-tasks-20260905/README.md` に記録する。
+**T1 が全員のブロッカー**。T1 が確定する前に T2〜T5 を並列で走らせると、型が変わるたびに全員が手戻る。初稿ではT4の依存をT1だけとしていたが、実装で日付の検証と加算をT2の関数に共通化したため、T4もT2に依存する形へ更新した。現在の依存では、T2確定後にT3とT4を分けられる。実走で実際に使った編成と順序は `docs/runs/recurring-tasks-20260905/README.md` に記録する。
 
 ## 5. 実走前の補完（2026-09-05）
 
