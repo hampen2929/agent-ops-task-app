@@ -31,7 +31,7 @@ jobs:
             --allowedTools "Read,Grep,Glob" \
             --permission-mode dontAsk \
             --output-format json \
-            --max-budget-usd 0.50 \
+            --max-budget-usd 1.50 \
             --json-schema "$(cat .github/schemas/review-schema.json)" \
             > /tmp/review.json
           review_exit=$?
