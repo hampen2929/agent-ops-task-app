@@ -12,8 +12,8 @@ export function buildDailyDigest(store: TaskStore, today: string, withinDays = 3
     throw new Error("withinDays must be an integer from 0 to 365");
   }
   // 日付上限を越える窓は、扱える最終日までに制限する。
-  let end: string;
-  try { end = addCalendarDays(today, withinDays); } catch { end = "9999-12-31"; }
+  const remainingDays = (Date.parse("9999-12-31T00:00:00.000Z") - Date.parse(`${today}T00:00:00.000Z`)) / 86_400_000;
+  const end = addCalendarDays(today, Math.min(withinDays, remainingDays));
   const open = store.list({ status: "open" });
   const overdue = store.overdue(today);
   const dueToday = open.filter((t) => t.dueDate === today);

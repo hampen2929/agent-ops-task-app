@@ -28,7 +28,7 @@ export class TaskStore {
       task.recurrence = rule;
       task.seriesId = task.id;
       task.occurrence = 1;
-      if (rule.frequency === "monthly") task.anchorDay = Number(dueDate!.slice(8, 10));
+      if (rule.frequency === "monthly" && dueDate !== undefined) task.anchorDay = Number(dueDate.slice(8, 10));
     }
     this.tasks.set(task.id, task);
     return task;

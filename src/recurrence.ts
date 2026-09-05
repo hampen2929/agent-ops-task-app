@@ -9,6 +9,7 @@ function daysInMonth(year: number, month: number): number {
   return [4, 6, 9, 11].includes(month) ? 30 : 31;
 }
 
+/** 0001-01-01〜9999-12-31の実在する暦日かを判定する。 */
 export function isValidDate(value: unknown): value is string {
   if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   const year = Number(value.slice(0, 4));
@@ -17,6 +18,7 @@ export function isValidDate(value: unknown): value is string {
   return year >= 1 && month >= 1 && month <= 12 && day >= 1 && day <= daysInMonth(year, month);
 }
 
+/** 暦日の契約を満たさない入力は、引数名を添えて例外にする。 */
 export function assertDate(value: unknown, label: string): asserts value is string {
   if (!isValidDate(value)) throw new Error(`invalid ${label}: expected a real YYYY-MM-DD date`);
 }
@@ -25,6 +27,7 @@ function epoch(value: string): number {
   return new Date(`${value}T00:00:00.000Z`).getTime();
 }
 
+/** UTCの暦日を指定日数進める。対応日付範囲を超えたら例外にする。 */
 export function addCalendarDays(date: string, days: number): string {
   assertDate(date, "date");
   if (!Number.isSafeInteger(days)) throw new Error("days must be a safe integer");
@@ -35,6 +38,7 @@ export function addCalendarDays(date: string, days: number): string {
   return result;
 }
 
+/** 規則の型・キー・値域を検証し、呼び出し元から独立したコピーを返す。 */
 export function validateRecurrence(value: unknown): Recurrence {
   if (value === null || typeof value !== "object" || Array.isArray(value)) {
     throw new Error("recurrence must be an object");
