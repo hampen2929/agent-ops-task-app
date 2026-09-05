@@ -4,7 +4,9 @@ import { TaskStore } from "./store.ts";
 
 /**
  * 日次ダイジェストの本文を組み立てる。
- * 通知の送信自体は行わない（送信は呼び出し側の責務）。
+ * 通知の送信自体は行わない（送信は呼び出し側の責務）。保存状態も変更しない。
+ * todayは実在するYYYY-MM-DD、withinDaysは既定3・0〜365の整数。不正値は例外。
+ * 今日より後からwithinDays日後までを含み、窓の終端は9999-12-31までに制限する。
  */
 export function buildDailyDigest(store: TaskStore, today: string, withinDays = 3): string {
   assertDate(today, "today");

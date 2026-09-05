@@ -70,7 +70,12 @@ export function validateRecurrence(value: unknown): Recurrence {
   return result;
 }
 
-/** 現在の期限より少なくとも1周期先、かつafterより後の期限を返す。 */
+/**
+ * 現在の期限より少なくとも1周期先、かつafterより後の期限を返す。
+ * anchorDayは月次の元の日（1〜31、既定はdueDateの日）、afterの既定はdueDate。
+ * untilを超える候補はundefined。countの判定は生成数を保持する保存層の責務。
+ * 不正入力や、untilによる終了ではない対応日付範囲超過は例外にする。
+ */
 export function nextDueDate(
   dueDate: string,
   recurrence: Recurrence,
