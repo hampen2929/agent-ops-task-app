@@ -1,0 +1,15 @@
+
+> agent-ops-task-app@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /private/tmp/ai-book-reference-run
+
+ ✓ tests/store.test.ts (7 tests) 4ms
+ ✓ tests/notify.test.ts (2 tests) 2ms
+
+ Test Files  2 passed (2)
+      Tests  9 passed (9)
+   Start at  21:16:20
+   Duration  668ms (transform 523ms, setup 0ms, collect 532ms, tests 5ms, environment 0ms, prepare 183ms)
+

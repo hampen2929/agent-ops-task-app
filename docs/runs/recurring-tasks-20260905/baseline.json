@@ -1,0 +1,40 @@
+[
+  {
+    "name": "baseline-typecheck",
+    "command": [
+      "npm",
+      "run",
+      "typecheck"
+    ],
+    "started_at": "2026-09-05T12:16:19.021012+00:00",
+    "elapsed_seconds": 1.021,
+    "exit_code": 0,
+    "log": "baseline-typecheck.txt",
+    "commit": "e3752aa10c29de566e620099aa14ea89039070b5"
+  },
+  {
+    "name": "baseline-test",
+    "command": [
+      "npm",
+      "test"
+    ],
+    "started_at": "2026-09-05T12:16:20.057910+00:00",
+    "elapsed_seconds": 1.692,
+    "exit_code": 0,
+    "log": "baseline-test.txt",
+    "commit": "e3752aa10c29de566e620099aa14ea89039070b5"
+  },
+  {
+    "name": "baseline-lint",
+    "command": [
+      "npm",
+      "run",
+      "lint"
+    ],
+    "started_at": "2026-09-05T12:16:21.764491+00:00",
+    "elapsed_seconds": 1.282,
+    "exit_code": 0,
+    "log": "baseline-lint.txt",
+    "commit": "e3752aa10c29de566e620099aa14ea89039070b5"
+  }
+]
