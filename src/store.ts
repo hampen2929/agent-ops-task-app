@@ -6,6 +6,7 @@ import { assertDate, nextDueDate, validateRecurrence } from "./recurrence.ts";
 export class TaskStore {
   private readonly tasks = new Map<string, Task>();
 
+  /** タスクを追加する。繰り返しではdueDate必須、untilは初回期限以上。 */
   add(title: string, dueDate?: string, recurrence?: Recurrence): Task {
     const trimmed = title.trim();
     if (trimmed.length === 0) {
@@ -42,6 +43,10 @@ export class TaskStore {
     return task;
   }
 
+  /**
+   * 現在タスクを完了して返し、規則があれば次回分を保存する。
+   * today省略時はUTCの今日。日付計算に失敗した場合は保存状態を変えない。
+   */
   complete(id: string, today = new Date().toISOString().slice(0, 10)): Task {
     const task = this.get(id);
     if (task.status === "done") {

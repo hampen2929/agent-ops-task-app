@@ -18,6 +18,7 @@ async function readBody(req: IncomingMessage): Promise<unknown> {
   return raw.length === 0 ? {} : JSON.parse(raw);
 }
 
+/** 渡されたストアを使うHTTPサーバー。省略時は呼び出しごとに独立したストアを作る。 */
 export function handle(store = new TaskStore()): ReturnType<typeof createServer> {
   return createServer((req, res) => {
     void route(req, res, store).catch((err: unknown) => {
