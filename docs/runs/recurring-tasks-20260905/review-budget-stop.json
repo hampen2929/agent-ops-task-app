@@ -1,0 +1,12 @@
+{
+  "commit": "708dacc",
+  "run_url": "https://github.com/hampen2929/agent-ops-task-app/actions/runs/33967767613",
+  "subtype": "error_max_budget_usd",
+  "is_error": true,
+  "configured_budget_usd": 0.5,
+  "reported_total_cost_usd": 0.5228395,
+  "num_turns": 12,
+  "error_count": 1,
+  "observed_at": "2026-09-05T13:05:18Z",
+  "whole_run_total_usd": null
+}

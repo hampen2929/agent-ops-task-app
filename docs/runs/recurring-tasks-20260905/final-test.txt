@@ -1,0 +1,19 @@
+
+> agent-ops-task-app@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /private/tmp/ai-book-reference-run
+
+ ✓ tests/store.test.ts (7 tests) 4ms
+ ✓ tests/recurrence.test.ts (28 tests) 4ms
+ ✓ tests/store-recurrence.test.ts (9 tests) 5ms
+ ✓ tests/notify.test.ts (2 tests) 2ms
+ ✓ tests/notify-reminders.test.ts (9 tests) 4ms
+ ✓ tests/server-recurrence.test.ts (15 tests) 60ms
+
+ Test Files  6 passed (6)
+      Tests  70 passed (70)
+   Start at  21:45:58
+   Duration  476ms (transform 512ms, setup 0ms, collect 635ms, tests 79ms, environment 1ms, prepare 562ms)
+
