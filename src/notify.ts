@@ -1,3 +1,4 @@
+import { addCalendarDays, assertDate } from "./recurrence.ts";
 import type { Task } from "./types.ts";
 import { TaskStore } from "./store.ts";
 
@@ -5,7 +6,14 @@ import { TaskStore } from "./store.ts";
  * 日次ダイジェストの本文を組み立てる。
  * 通知の送信自体は行わない（送信は呼び出し側の責務）。
  */
-export function buildDailyDigest(store: TaskStore, today: string): string {
+export function buildDailyDigest(store: TaskStore, today: string, withinDays = 3): string {
+  assertDate(today, "today");
+  if (!Number.isInteger(withinDays) || withinDays < 0 || withinDays > 365) {
+    throw new Error("withinDays must be an integer from 0 to 365");
+  }
+  // 日付上限を越える窓は、扱える最終日までに制限する。
+  let end: string;
+  try { end = addCalendarDays(today, withinDays); } catch { end = "9999-12-31"; }
   const open = store.list({ status: "open" });
   const overdue = store.overdue(today);
   const dueToday = open.filter((t) => t.dueDate === today);
@@ -22,6 +30,9 @@ export function buildDailyDigest(store: TaskStore, today: string): string {
       lines.push(formatLine(task));
     }
   }
+  lines.push("", `## 今後${withinDays}日以内が期限`);
+  const upcoming = open.filter((task) => task.dueDate !== undefined && task.dueDate > today && task.dueDate <= end);
+  lines.push(...(upcoming.length > 0 ? upcoming.map(formatLine) : ["- なし"]));
   return lines.join("\n");
 }
 

@@ -2,7 +2,7 @@ import { createServer, type IncomingMessage, type ServerResponse } from "node:ht
 import { TaskStore } from "./store.ts";
 import { buildDailyDigest } from "./notify.ts";
 
-const store = new TaskStore();
+import { validateRecurrence } from "./recurrence.ts";
 
 function json(res: ServerResponse, status: number, body: unknown): void {
   res.writeHead(status, { "content-type": "application/json; charset=utf-8" });
@@ -18,16 +18,16 @@ async function readBody(req: IncomingMessage): Promise<unknown> {
   return raw.length === 0 ? {} : JSON.parse(raw);
 }
 
-export function handle(): ReturnType<typeof createServer> {
+export function handle(store = new TaskStore()): ReturnType<typeof createServer> {
   return createServer((req, res) => {
-    void route(req, res).catch((err: unknown) => {
+    void route(req, res, store).catch((err: unknown) => {
       const message = err instanceof Error ? err.message : "internal error";
       json(res, 400, { error: message });
     });
   });
 }
 
-async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
+async function route(req: IncomingMessage, res: ServerResponse, store: TaskStore): Promise<void> {
   const url = new URL(req.url ?? "/", "http://localhost");
   const completeMatch = /^\/tasks\/([^/]+)\/complete$/.exec(url.pathname);
 
@@ -37,16 +37,22 @@ async function route(req: IncomingMessage, res: ServerResponse): Promise<void> {
     json(res, 200, { tasks: store.list() });
   } else if (req.method === "GET" && url.pathname === "/digest") {
     const today = url.searchParams.get("today") ?? new Date().toISOString().slice(0, 10);
-    json(res, 200, { digest: buildDailyDigest(store, today) });
+    const rawDays = url.searchParams.get("withinDays");
+    if (rawDays !== null && !/^\d+$/.test(rawDays)) throw new Error("invalid withinDays");
+    json(res, 200, { digest: buildDailyDigest(store, today, rawDays === null ? 3 : Number(rawDays)) });
   } else if (req.method === "POST" && url.pathname === "/tasks") {
-    const body = (await readBody(req)) as { title?: string; dueDate?: string };
-    if (typeof body.title !== "string") {
+    const value = await readBody(req);
+    if (value === null || typeof value !== "object" || Array.isArray(value)) throw new Error("body must be an object");
+    const body = value as Record<string, unknown>;
+    if (typeof body["title"] !== "string") {
       json(res, 400, { error: "title is required" });
       return;
     }
-    json(res, 201, { task: store.add(body.title, body.dueDate) });
+    if (body["dueDate"] !== undefined && typeof body["dueDate"] !== "string") throw new Error("invalid dueDate");
+    const recurrence = body["recurrence"] === undefined ? undefined : validateRecurrence(body["recurrence"]);
+    json(res, 201, { task: store.add(body["title"], body["dueDate"], recurrence) });
   } else if (req.method === "POST" && completeMatch !== null && completeMatch[1] !== undefined) {
-    json(res, 200, { task: store.complete(completeMatch[1]) });
+    json(res, 200, { task: store.complete(completeMatch[1], url.searchParams.get("today") ?? undefined) });
   } else {
     json(res, 404, { error: "not found" });
   }
