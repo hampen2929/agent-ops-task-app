@@ -1,4 +1,5 @@
-// Only a completed, internally consistent grader result is a classification.
+/** Read a spawnSync result; return the grader JSON or an infrastructure_error object.
+ * Only completed results with consistent counts, status and exit are classifications. */
 export function readGradeProcess(processResult) {
   const invalid = reason => ({status:'infrastructure_error', error:reason,
     stderr:processResult.stderr ?? '', processError:String(processResult.error ?? '')});

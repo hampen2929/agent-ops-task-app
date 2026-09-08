@@ -55,3 +55,5 @@ python3 -m unittest discover -s examples/evaluation-book -p test_record_contract
 `node --test examples/evaluation-book/verify-grade-process.mjs` で4件のテストを実行する。lab.mjsは終了コードと構造化結果の整合を確認し、基盤障害を誤不合格へ混ぜずunconfirmedへ集計する。未確認が1件でもあれば非ゼロ終了する。既存の保存レポートは当時の形式のまま保持し、新しい実行ではunconfirmedが追加される。
 
 ライブランナーの既存recordスキップは安全な再開機構ではない。experiment.jsonは開始時に更新され、未完成のworkspaceに古いファイルが残り得る。中断した出力は保持し、新しい出力ディレクトリでやり直す。
+
+`node --test examples/evaluation-book/verify-lab.mjs` はv2側の六評価を基盤エラーへ置き換える模擬テスト。未確認6件、誤不合格0件、lab全体の終了1を検証する。正常系の故障実験とは別にCIで実行する。
