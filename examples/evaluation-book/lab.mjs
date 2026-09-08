@@ -26,12 +26,17 @@ await mkdir(out,{recursive:true});
 try {
  for (const name of ['types.ts','recurrence.ts']) await copyFile(join(base,'src',name),join(work,name));
  const results=[];
+ const casePaths={};
+ for(const [version,items] of Object.entries({v1:extended.filter(c=>c.id==='daily'),v2:extended})){
+  casePaths[version]=join(work,version+'.json');
+  await writeFile(casePaths[version],JSON.stringify(items));
+ }
  for(const [variant,text] of Object.entries(variants)){
   const path=join(work,variant+'.ts'); await writeFile(path,text);
-  for(const [version,items] of Object.entries({v1:extended.filter(c=>c.id==='daily'),v2:extended})){
-   const casePath=join(work,'cases.json');await writeFile(casePath,JSON.stringify(items));
+  for(const version of Object.keys(casePaths)){
+   const casePath=casePaths[version];
    const p=spawnSync(process.execPath,[join(here,'grade.mjs'),path,casePath],{encoding:'utf8',timeout:10000});
-   let grade;try{grade=JSON.parse(p.stdout)}catch{grade={status:'infrastructure_error',stderr:p.stderr}}
+   let grade;try{grade=JSON.parse(p.stdout)}catch(e){grade={status:'infrastructure_error',error:String(e),stderr:p.stderr,processError:String(p.error??'')}}
    results.push({variant,version,expectedAccept:variant==='correct',...grade});
   }
  }

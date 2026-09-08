@@ -3,7 +3,6 @@ Run: python3 run-agents.py BASE_CHECKOUT OUTPUT_DIRECTORY --live
 The cost field reported by CLI is not proof of an actual subscription charge.
 """
 import hashlib, json, os, pathlib, shutil, subprocess, sys, time
-from record_contract import parse_response, accepts
 lab=pathlib.Path(__file__).resolve().parent
 base=pathlib.Path(sys.argv[1]).resolve(); output=pathlib.Path(sys.argv[2]).resolve()
 assert sys.argv[3:]==['--live'], 'Live model execution requires --live'
@@ -33,20 +32,15 @@ for trial in metadata['order']:
   if isinstance(err,bytes): err=err.decode(errors='replace')
   code=None; timeout=True
  (dest/'response.json').write_text(raw); (dest/'stderr.txt').write_text(err)
- response, response_error = parse_response(raw)
- if response_error: print(f'{trial}: {response_error}', file=sys.stderr)
+ try: response=json.loads(raw)
+ except ValueError: response={}
  changed=[name for name,digest in before.items() if not (work/name).exists() or hashlib.sha256((work/name).read_bytes()).hexdigest()!=digest]
  commands={}
  for name,args in [('grade',['node',str(lab/'grade.mjs'),str(work/'src/preview.ts')]),('typecheck',['npm','run','typecheck']),('regression',['npm','test']),('lint',['npm','run','lint'])]:
   try:
    q=subprocess.run(args,cwd=work,capture_output=True,text=True,timeout=60)
    (dest/(name+'.txt')).write_text(q.stdout+q.stderr); commands[name]=q.returncode
-  except subprocess.TimeoutExpired as e:
-   partial = (e.stdout or b'') + (e.stderr or b'')
-   if isinstance(partial, bytes): partial=partial.decode(errors='replace')
-   (dest/(name+'.txt')).write_text('TIMEOUT after 60 seconds\n'+partial)
-   print(f'{trial}: {name} timed out', file=sys.stderr)
-   commands[name]=None
- record={'trial':trial,'started_at_epoch':started,'elapsed_seconds':round(time.time()-started,3),'agent_exit':code,'agent_timeout':timeout,'reported_total_cost_usd':response.get('total_cost_usd'),'usage':response.get('usage'),'model_usage':response.get('modelUsage'),'changed_protected_files':changed,'checks':commands,'response_error':response_error,'accepted_by_machine':accepts(response_error,timeout,code,changed,commands)}
+  except subprocess.TimeoutExpired: commands[name]=None
+ record={'trial':trial,'started_at_epoch':started,'elapsed_seconds':round(time.time()-started,3),'agent_exit':code,'agent_timeout':timeout,'reported_total_cost_usd':response.get('total_cost_usd'),'usage':response.get('usage'),'model_usage':response.get('modelUsage'),'changed_protected_files':changed,'checks':commands,'accepted_by_machine':not timeout and code==0 and not response.get('is_error',False) and not changed and all(v==0 for v in commands.values())}
  (dest/'record.json').write_text(json.dumps(record,ensure_ascii=False,indent=2))
  print(json.dumps(record,ensure_ascii=False),flush=True)

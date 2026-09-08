@@ -1,0 +1,32 @@
+[
+  {
+    "trial": "A3",
+    "response_error": null,
+    "accepted_v2": true
+  },
+  {
+    "trial": "B2",
+    "response_error": null,
+    "accepted_v2": true
+  },
+  {
+    "trial": "B3",
+    "response_error": null,
+    "accepted_v2": true
+  },
+  {
+    "trial": "A2",
+    "response_error": null,
+    "accepted_v2": true
+  },
+  {
+    "trial": "B1",
+    "response_error": null,
+    "accepted_v2": true
+  },
+  {
+    "trial": "A1",
+    "response_error": null,
+    "accepted_v2": true
+  }
+]

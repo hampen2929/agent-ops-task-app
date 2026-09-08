@@ -1,6 +1,8 @@
 import type { Recurrence } from "./types.ts";
 import { assertDate, validateRecurrence, nextDueDate } from "./recurrence.ts";
 
+/** Future dates exclude the origin; count includes it, until is inclusive,
+ * and the original monthly anchor survives short months. Validate before returning. */
 export function previewDueDates(dueDate: string, recurrence: Recurrence, limit: number): string[] {
   assertDate(dueDate, "dueDate");
   const rule = validateRecurrence(recurrence);

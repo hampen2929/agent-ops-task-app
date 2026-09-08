@@ -41,3 +41,11 @@ python3 examples/evaluation-book/run-agents.py "$PWD" /tmp/my-evaluation-trials 
 最終JSONには完全なツール逐次履歴がない。試行内の修正回数やツール順の精密な分析には使えない。ケース通過率と課題成功率を区別する。公開記録のローカル一時パスは実行時の位置を示すだけで、読者の必須パスではない。
 
 保存された追加テストは `.test.ts.txt` として保管する。通常のVitest収集へ混入させないためで、内容は元のテストと同一。試行を復元して実行する場合だけ `.txt` を外して tests/ に置く。初回CIではこの分離がなく、保存テストの相対importが解決できず失敗した。
+
+## 受け入れロジックの検証
+
+```bash
+python3 -m unittest discover -s examples/evaluation-book -p test_record_contract.py
+```
+
+独立AIレビューで発見したCLI応答解析失敗時の誤受け入れを修正。保存済み6応答の判定は変わらない（evidence/acceptance-v2-audit.json）。初回実験のランナーをevidence/runner-v1.py.txtに保持。最新版ランナーで新しいライブ試行は実施せず、保存応答の再判定と異常系の単体テストを行った。
