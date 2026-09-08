@@ -1,0 +1,6 @@
+{
+  "exit": 0,
+  "stdout": "{\n  \"v1\": {\n    \"good\": 1,\n    \"bad\": 6,\n    \"falseAccept\": 6,\n    \"falseReject\": 0\n  },\n  \"v2\": {\n    \"good\": 2,\n    \"bad\": 6,\n    \"falseAccept\": 0,\n    \"falseReject\": 0\n  }\n}\n",
+  "stderr": "",
+  "note": "synthetic wrapper returns pass otherwise and exit2 on six faulty v2 rows"
+}

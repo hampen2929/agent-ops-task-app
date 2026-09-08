@@ -1,0 +1,10 @@
+[
+ {"id":"daily","split":"development","due":"2026-01-01","rule":{"frequency":"daily","interval":2},"limit":2,"expected":["2026-01-03","2026-01-05"]},
+ {"id":"month-anchor","split":"development","due":"2026-01-31","rule":{"frequency":"monthly","interval":1},"limit":3,"expected":["2026-02-28","2026-03-31","2026-04-30"]},
+ {"id":"count-includes-first","split":"development","due":"2026-01-01","rule":{"frequency":"daily","interval":1,"count":2},"limit":4,"expected":["2026-01-02"]},
+ {"id":"until-inclusive","split":"development","due":"2026-01-01","rule":{"frequency":"daily","interval":1,"until":"2026-01-03"},"limit":5,"expected":["2026-01-02","2026-01-03"]},
+ {"id":"zero-still-validates","split":"development","due":"2026-02-30","rule":{"frequency":"daily","interval":1},"limit":0,"throws":true},
+ {"id":"bad-limit","split":"development","due":"2026-01-01","rule":{"frequency":"daily","interval":1},"limit":1.5,"throws":true},
+ {"id":"leap-year-anchor","split":"confirmation","due":"2028-01-31","rule":{"frequency":"monthly","interval":1},"limit":2,"expected":["2028-02-29","2028-03-31"]},
+ {"id":"invalid-until-with-count-one","split":"confirmation","due":"2026-01-03","rule":{"frequency":"daily","interval":1,"count":1,"until":"2026-01-02"},"limit":2,"throws":true}
+]
