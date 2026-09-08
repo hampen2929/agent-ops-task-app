@@ -1,0 +1,865 @@
+{
+  "kind": "deterministic_fault_injection_not_agent_trials",
+  "node": "v24.15.0",
+  "case_sha256": "a5b3f9d72cb66f1ac189523923e15fae9eb5ca497944391c54a894f677ba4ea1",
+  "results": [
+    {
+      "variant": "correct",
+      "version": "v1",
+      "expectedAccept": true,
+      "status": "pass",
+      "passed": 1,
+      "total": 1,
+      "results": [
+        {
+          "id": "daily",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-03",
+            "2026-01-05"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "variant": "correct",
+      "version": "v2",
+      "expectedAccept": true,
+      "status": "pass",
+      "passed": 9,
+      "total": 9,
+      "results": [
+        {
+          "id": "daily",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-03",
+            "2026-01-05"
+          ],
+          "error": null
+        },
+        {
+          "id": "month-anchor",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-02-28",
+            "2026-03-31",
+            "2026-04-30"
+          ],
+          "error": null
+        },
+        {
+          "id": "count-includes-first",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-02"
+          ],
+          "error": null
+        },
+        {
+          "id": "until-inclusive",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-02",
+            "2026-01-03"
+          ],
+          "error": null
+        },
+        {
+          "id": "zero-still-validates",
+          "split": "development",
+          "passed": true,
+          "actual": null,
+          "error": "Error: invalid dueDate: expected a real YYYY-MM-DD date"
+        },
+        {
+          "id": "bad-limit",
+          "split": "development",
+          "passed": true,
+          "actual": null,
+          "error": "Error: invalid limit"
+        },
+        {
+          "id": "leap-year-anchor",
+          "split": "confirmation",
+          "passed": true,
+          "actual": [
+            "2028-02-29",
+            "2028-03-31"
+          ],
+          "error": null
+        },
+        {
+          "id": "invalid-until-with-count-one",
+          "split": "confirmation",
+          "passed": true,
+          "actual": null,
+          "error": "Error: until precedes dueDate"
+        },
+        {
+          "id": "valid-zero",
+          "split": "control",
+          "passed": true,
+          "actual": [],
+          "error": null
+        }
+      ]
+    },
+    {
+      "variant": "anchor-drift",
+      "version": "v1",
+      "expectedAccept": false,
+      "status": "pass",
+      "passed": 1,
+      "total": 1,
+      "results": [
+        {
+          "id": "daily",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-03",
+            "2026-01-05"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "variant": "anchor-drift",
+      "version": "v2",
+      "expectedAccept": false,
+      "status": "fail",
+      "passed": 7,
+      "total": 9,
+      "results": [
+        {
+          "id": "daily",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-03",
+            "2026-01-05"
+          ],
+          "error": null
+        },
+        {
+          "id": "month-anchor",
+          "split": "development",
+          "passed": false,
+          "actual": [
+            "2026-02-28",
+            "2026-03-28",
+            "2026-04-28"
+          ],
+          "error": null
+        },
+        {
+          "id": "count-includes-first",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-02"
+          ],
+          "error": null
+        },
+        {
+          "id": "until-inclusive",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-02",
+            "2026-01-03"
+          ],
+          "error": null
+        },
+        {
+          "id": "zero-still-validates",
+          "split": "development",
+          "passed": true,
+          "actual": null,
+          "error": "Error: invalid dueDate: expected a real YYYY-MM-DD date"
+        },
+        {
+          "id": "bad-limit",
+          "split": "development",
+          "passed": true,
+          "actual": null,
+          "error": "Error: invalid limit"
+        },
+        {
+          "id": "leap-year-anchor",
+          "split": "confirmation",
+          "passed": false,
+          "actual": [
+            "2028-02-29",
+            "2028-03-29"
+          ],
+          "error": null
+        },
+        {
+          "id": "invalid-until-with-count-one",
+          "split": "confirmation",
+          "passed": true,
+          "actual": null,
+          "error": "Error: until precedes dueDate"
+        },
+        {
+          "id": "valid-zero",
+          "split": "control",
+          "passed": true,
+          "actual": [],
+          "error": null
+        }
+      ]
+    },
+    {
+      "variant": "count-off-by-one",
+      "version": "v1",
+      "expectedAccept": false,
+      "status": "pass",
+      "passed": 1,
+      "total": 1,
+      "results": [
+        {
+          "id": "daily",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-03",
+            "2026-01-05"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "variant": "count-off-by-one",
+      "version": "v2",
+      "expectedAccept": false,
+      "status": "fail",
+      "passed": 8,
+      "total": 9,
+      "results": [
+        {
+          "id": "daily",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-03",
+            "2026-01-05"
+          ],
+          "error": null
+        },
+        {
+          "id": "month-anchor",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-02-28",
+            "2026-03-31",
+            "2026-04-30"
+          ],
+          "error": null
+        },
+        {
+          "id": "count-includes-first",
+          "split": "development",
+          "passed": false,
+          "actual": [
+            "2026-01-02",
+            "2026-01-03"
+          ],
+          "error": null
+        },
+        {
+          "id": "until-inclusive",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-02",
+            "2026-01-03"
+          ],
+          "error": null
+        },
+        {
+          "id": "zero-still-validates",
+          "split": "development",
+          "passed": true,
+          "actual": null,
+          "error": "Error: invalid dueDate: expected a real YYYY-MM-DD date"
+        },
+        {
+          "id": "bad-limit",
+          "split": "development",
+          "passed": true,
+          "actual": null,
+          "error": "Error: invalid limit"
+        },
+        {
+          "id": "leap-year-anchor",
+          "split": "confirmation",
+          "passed": true,
+          "actual": [
+            "2028-02-29",
+            "2028-03-31"
+          ],
+          "error": null
+        },
+        {
+          "id": "invalid-until-with-count-one",
+          "split": "confirmation",
+          "passed": true,
+          "actual": null,
+          "error": "Error: until precedes dueDate"
+        },
+        {
+          "id": "valid-zero",
+          "split": "control",
+          "passed": true,
+          "actual": [],
+          "error": null
+        }
+      ]
+    },
+    {
+      "variant": "early-return",
+      "version": "v1",
+      "expectedAccept": false,
+      "status": "pass",
+      "passed": 1,
+      "total": 1,
+      "results": [
+        {
+          "id": "daily",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-03",
+            "2026-01-05"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "variant": "early-return",
+      "version": "v2",
+      "expectedAccept": false,
+      "status": "fail",
+      "passed": 8,
+      "total": 9,
+      "results": [
+        {
+          "id": "daily",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-03",
+            "2026-01-05"
+          ],
+          "error": null
+        },
+        {
+          "id": "month-anchor",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-02-28",
+            "2026-03-31",
+            "2026-04-30"
+          ],
+          "error": null
+        },
+        {
+          "id": "count-includes-first",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-02"
+          ],
+          "error": null
+        },
+        {
+          "id": "until-inclusive",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-02",
+            "2026-01-03"
+          ],
+          "error": null
+        },
+        {
+          "id": "zero-still-validates",
+          "split": "development",
+          "passed": false,
+          "actual": [],
+          "error": null
+        },
+        {
+          "id": "bad-limit",
+          "split": "development",
+          "passed": true,
+          "actual": null,
+          "error": "Error: invalid limit"
+        },
+        {
+          "id": "leap-year-anchor",
+          "split": "confirmation",
+          "passed": true,
+          "actual": [
+            "2028-02-29",
+            "2028-03-31"
+          ],
+          "error": null
+        },
+        {
+          "id": "invalid-until-with-count-one",
+          "split": "confirmation",
+          "passed": true,
+          "actual": null,
+          "error": "Error: until precedes dueDate"
+        },
+        {
+          "id": "valid-zero",
+          "split": "control",
+          "passed": true,
+          "actual": [],
+          "error": null
+        }
+      ]
+    },
+    {
+      "variant": "until-exclusive",
+      "version": "v1",
+      "expectedAccept": false,
+      "status": "pass",
+      "passed": 1,
+      "total": 1,
+      "results": [
+        {
+          "id": "daily",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-03",
+            "2026-01-05"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "variant": "until-exclusive",
+      "version": "v2",
+      "expectedAccept": false,
+      "status": "fail",
+      "passed": 8,
+      "total": 9,
+      "results": [
+        {
+          "id": "daily",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-03",
+            "2026-01-05"
+          ],
+          "error": null
+        },
+        {
+          "id": "month-anchor",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-02-28",
+            "2026-03-31",
+            "2026-04-30"
+          ],
+          "error": null
+        },
+        {
+          "id": "count-includes-first",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-02"
+          ],
+          "error": null
+        },
+        {
+          "id": "until-inclusive",
+          "split": "development",
+          "passed": false,
+          "actual": [
+            "2026-01-02"
+          ],
+          "error": null
+        },
+        {
+          "id": "zero-still-validates",
+          "split": "development",
+          "passed": true,
+          "actual": null,
+          "error": "Error: invalid dueDate: expected a real YYYY-MM-DD date"
+        },
+        {
+          "id": "bad-limit",
+          "split": "development",
+          "passed": true,
+          "actual": null,
+          "error": "Error: invalid limit"
+        },
+        {
+          "id": "leap-year-anchor",
+          "split": "confirmation",
+          "passed": true,
+          "actual": [
+            "2028-02-29",
+            "2028-03-31"
+          ],
+          "error": null
+        },
+        {
+          "id": "invalid-until-with-count-one",
+          "split": "confirmation",
+          "passed": true,
+          "actual": null,
+          "error": "Error: until precedes dueDate"
+        },
+        {
+          "id": "valid-zero",
+          "split": "control",
+          "passed": true,
+          "actual": [],
+          "error": null
+        }
+      ]
+    },
+    {
+      "variant": "ignore-invalid-until",
+      "version": "v1",
+      "expectedAccept": false,
+      "status": "pass",
+      "passed": 1,
+      "total": 1,
+      "results": [
+        {
+          "id": "daily",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-03",
+            "2026-01-05"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "variant": "ignore-invalid-until",
+      "version": "v2",
+      "expectedAccept": false,
+      "status": "fail",
+      "passed": 8,
+      "total": 9,
+      "results": [
+        {
+          "id": "daily",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-03",
+            "2026-01-05"
+          ],
+          "error": null
+        },
+        {
+          "id": "month-anchor",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-02-28",
+            "2026-03-31",
+            "2026-04-30"
+          ],
+          "error": null
+        },
+        {
+          "id": "count-includes-first",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-02"
+          ],
+          "error": null
+        },
+        {
+          "id": "until-inclusive",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-02",
+            "2026-01-03"
+          ],
+          "error": null
+        },
+        {
+          "id": "zero-still-validates",
+          "split": "development",
+          "passed": true,
+          "actual": null,
+          "error": "Error: invalid dueDate: expected a real YYYY-MM-DD date"
+        },
+        {
+          "id": "bad-limit",
+          "split": "development",
+          "passed": true,
+          "actual": null,
+          "error": "Error: invalid limit"
+        },
+        {
+          "id": "leap-year-anchor",
+          "split": "confirmation",
+          "passed": true,
+          "actual": [
+            "2028-02-29",
+            "2028-03-31"
+          ],
+          "error": null
+        },
+        {
+          "id": "invalid-until-with-count-one",
+          "split": "confirmation",
+          "passed": false,
+          "actual": [],
+          "error": null
+        },
+        {
+          "id": "valid-zero",
+          "split": "control",
+          "passed": true,
+          "actual": [],
+          "error": null
+        }
+      ]
+    },
+    {
+      "variant": "reject-valid-zero",
+      "version": "v1",
+      "expectedAccept": false,
+      "status": "pass",
+      "passed": 1,
+      "total": 1,
+      "results": [
+        {
+          "id": "daily",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-03",
+            "2026-01-05"
+          ],
+          "error": null
+        }
+      ]
+    },
+    {
+      "variant": "reject-valid-zero",
+      "version": "v2",
+      "expectedAccept": false,
+      "status": "fail",
+      "passed": 8,
+      "total": 9,
+      "results": [
+        {
+          "id": "daily",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-03",
+            "2026-01-05"
+          ],
+          "error": null
+        },
+        {
+          "id": "month-anchor",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-02-28",
+            "2026-03-31",
+            "2026-04-30"
+          ],
+          "error": null
+        },
+        {
+          "id": "count-includes-first",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-02"
+          ],
+          "error": null
+        },
+        {
+          "id": "until-inclusive",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-02",
+            "2026-01-03"
+          ],
+          "error": null
+        },
+        {
+          "id": "zero-still-validates",
+          "split": "development",
+          "passed": true,
+          "actual": null,
+          "error": "Error: invalid dueDate: expected a real YYYY-MM-DD date"
+        },
+        {
+          "id": "bad-limit",
+          "split": "development",
+          "passed": true,
+          "actual": null,
+          "error": "Error: invalid limit"
+        },
+        {
+          "id": "leap-year-anchor",
+          "split": "confirmation",
+          "passed": true,
+          "actual": [
+            "2028-02-29",
+            "2028-03-31"
+          ],
+          "error": null
+        },
+        {
+          "id": "invalid-until-with-count-one",
+          "split": "confirmation",
+          "passed": true,
+          "actual": null,
+          "error": "Error: until precedes dueDate"
+        },
+        {
+          "id": "valid-zero",
+          "split": "control",
+          "passed": false,
+          "actual": null,
+          "error": "Error: invalid limit"
+        }
+      ]
+    },
+    {
+      "variant": "correct-alternative",
+      "version": "v2",
+      "expectedAccept": true,
+      "status": "pass",
+      "passed": 9,
+      "total": 9,
+      "results": [
+        {
+          "id": "daily",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-03",
+            "2026-01-05"
+          ],
+          "error": null
+        },
+        {
+          "id": "month-anchor",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-02-28",
+            "2026-03-31",
+            "2026-04-30"
+          ],
+          "error": null
+        },
+        {
+          "id": "count-includes-first",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-02"
+          ],
+          "error": null
+        },
+        {
+          "id": "until-inclusive",
+          "split": "development",
+          "passed": true,
+          "actual": [
+            "2026-01-02",
+            "2026-01-03"
+          ],
+          "error": null
+        },
+        {
+          "id": "zero-still-validates",
+          "split": "development",
+          "passed": true,
+          "actual": null,
+          "error": "Error: invalid dueDate: expected a real YYYY-MM-DD date"
+        },
+        {
+          "id": "bad-limit",
+          "split": "development",
+          "passed": true,
+          "actual": null,
+          "error": "Error: invalid limit"
+        },
+        {
+          "id": "leap-year-anchor",
+          "split": "confirmation",
+          "passed": true,
+          "actual": [
+            "2028-02-29",
+            "2028-03-31"
+          ],
+          "error": null
+        },
+        {
+          "id": "invalid-until-with-count-one",
+          "split": "confirmation",
+          "passed": true,
+          "actual": null,
+          "error": "Error: until precedes dueDate"
+        },
+        {
+          "id": "valid-zero",
+          "split": "control",
+          "passed": true,
+          "actual": [],
+          "error": null
+        }
+      ]
+    }
+  ],
+  "matrix": {
+    "v1": {
+      "good": 1,
+      "bad": 6,
+      "falseAccept": 6,
+      "falseReject": 0
+    },
+    "v2": {
+      "good": 2,
+      "bad": 6,
+      "falseAccept": 0,
+      "falseReject": 0
+    }
+  }
+}

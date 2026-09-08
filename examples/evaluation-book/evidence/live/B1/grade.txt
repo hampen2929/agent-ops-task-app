@@ -1,0 +1,78 @@
+{
+  "status": "pass",
+  "passed": 8,
+  "total": 8,
+  "results": [
+    {
+      "id": "daily",
+      "split": "development",
+      "passed": true,
+      "actual": [
+        "2026-01-03",
+        "2026-01-05"
+      ],
+      "error": null
+    },
+    {
+      "id": "month-anchor",
+      "split": "development",
+      "passed": true,
+      "actual": [
+        "2026-02-28",
+        "2026-03-31",
+        "2026-04-30"
+      ],
+      "error": null
+    },
+    {
+      "id": "count-includes-first",
+      "split": "development",
+      "passed": true,
+      "actual": [
+        "2026-01-02"
+      ],
+      "error": null
+    },
+    {
+      "id": "until-inclusive",
+      "split": "development",
+      "passed": true,
+      "actual": [
+        "2026-01-02",
+        "2026-01-03"
+      ],
+      "error": null
+    },
+    {
+      "id": "zero-still-validates",
+      "split": "development",
+      "passed": true,
+      "actual": null,
+      "error": "Error: invalid dueDate: expected a real YYYY-MM-DD date"
+    },
+    {
+      "id": "bad-limit",
+      "split": "development",
+      "passed": true,
+      "actual": null,
+      "error": "Error: limit must be an integer from 0 to 100"
+    },
+    {
+      "id": "leap-year-anchor",
+      "split": "confirmation",
+      "passed": true,
+      "actual": [
+        "2028-02-29",
+        "2028-03-31"
+      ],
+      "error": null
+    },
+    {
+      "id": "invalid-until-with-count-one",
+      "split": "confirmation",
+      "passed": true,
+      "actual": null,
+      "error": "Error: invalid recurrence until: must not be earlier than dueDate"
+    }
+  ]
+}

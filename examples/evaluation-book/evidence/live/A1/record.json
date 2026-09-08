@@ -1,0 +1,89 @@
+{
+  "trial": "A1",
+  "started_at_epoch": 1788864132.684837,
+  "elapsed_seconds": 89.321,
+  "agent_exit": 0,
+  "agent_timeout": false,
+  "reported_total_cost_usd": 0.411124,
+  "usage": {
+    "input_tokens": 16,
+    "cache_creation_input_tokens": 18645,
+    "cache_read_input_tokens": 99232,
+    "output_tokens": 6949,
+    "output_tokens_details": {
+      "thinking_tokens": 2707
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 18645,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 816,
+        "cache_read_input_tokens": 20955,
+        "cache_creation_input_tokens": 593,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 593
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "model_usage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 1173,
+      "outputTokens": 16,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.001253,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "thinkingTokens": 0,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    },
+    "claude-opus-5[1m]": {
+      "inputTokens": 16,
+      "outputTokens": 6949,
+      "cacheReadInputTokens": 99232,
+      "cacheCreationInputTokens": 18645,
+      "webSearchRequests": 0,
+      "costUSD": 0.40987099999999993,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "thinkingTokens": 2707,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "changed_protected_files": [],
+  "checks": {
+    "grade": 0,
+    "typecheck": 0,
+    "regression": 0,
+    "lint": 0
+  },
+  "accepted_by_machine": true,
+  "post_run_configuration_audit": {
+    "package.json": true,
+    "package-lock.json": true,
+    "tsconfig.json": true,
+    "eslint.config.js": true
+  },
+  "new_files": [
+    "tests/preview.test.ts",
+    "src/preview.ts"
+  ]
+}

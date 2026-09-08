@@ -1,0 +1,14 @@
+{
+  "A": {
+    "trials": 3,
+    "accepted": 3,
+    "reported_cost_sum_usd": 1.2667275,
+    "median_elapsed_seconds": 89.321
+  },
+  "B": {
+    "trials": 3,
+    "accepted": 3,
+    "reported_cost_sum_usd": 1.4961415,
+    "median_elapsed_seconds": 108.396
+  }
+}

@@ -1,0 +1,20 @@
+
+> agent-ops-task-app@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /private/tmp/evaluation-book-trials-20260908/A3/workspace
+
+ ✓ tests/recurrence.test.ts (28 tests) 4ms
+ ✓ tests/store.test.ts (7 tests) 3ms
+ ✓ tests/preview.test.ts (15 tests) 5ms
+ ✓ tests/store-recurrence.test.ts (9 tests) 5ms
+ ✓ tests/notify.test.ts (2 tests) 2ms
+ ✓ tests/notify-reminders.test.ts (9 tests) 4ms
+ ✓ tests/server-recurrence.test.ts (15 tests) 61ms
+
+ Test Files  7 passed (7)
+      Tests  85 passed (85)
+   Start at  19:50:28
+   Duration  396ms (transform 231ms, setup 0ms, collect 360ms, tests 84ms, environment 1ms, prepare 504ms)
+

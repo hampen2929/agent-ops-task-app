@@ -1,0 +1,23 @@
+{
+  "base_commit": "de86518900a80515794de9b04c924956c6b66f95",
+  "node": "v24.15.0",
+  "claude": "2.1.263 (Claude Code)",
+  "task_sha256": "a7d752ac29dd4432c9b1f29c0b5871a1406e3e27ded5a6643b3d9ad0907d91f2",
+  "cases_sha256": "77323e52cb1a2a7c406bd1cc1f69c1657147b39168a3abad176fe38cc77e69af",
+  "conditions": {
+    "A": "Add src/preview.ts to this TypeScript task app. Export previewDueDates(dueDate: string, recurrence: Recurrence, limit: number): string[]. Read src/recurrence.ts and src/types.ts. Do not modify existing source, tests, dependency files or configuration. You may add tests/preview.test.ts. No network, installs, git operations, external services or delegation. Use existing dependencies only.\n\nContract v1: Return future due dates, excluding the supplied dueDate. The supplied dueDate is occurrence number 1. count includes that first occurrence. Preserve the original day of month across short months by passing its anchor day to nextDueDate. until includes the boundary date. limit must be an integer from 0 through 100, otherwise throw. Validate dueDate and recurrence even when limit is zero or count is one. Reject an until date earlier than dueDate. Do not mutate recurrence. Use the existing recurrence helpers and their errors. A daily interval of 2 starting 2026-01-01 with limit 2 returns [\"2026-01-03\", \"2026-01-05\"]. Run appropriate existing checks. Final response: summarize files, actual checks and any unverified item.\n",
+    "B": "Add src/preview.ts to this TypeScript task app. Export previewDueDates(dueDate: string, recurrence: Recurrence, limit: number): string[]. Read src/recurrence.ts and src/types.ts. Do not modify existing source, tests, dependency files or configuration. You may add tests/preview.test.ts. No network, installs, git operations, external services or delegation. Use existing dependencies only.\n\nContract v1: Return future due dates, excluding the supplied dueDate. The supplied dueDate is occurrence number 1. count includes that first occurrence. Preserve the original day of month across short months by passing its anchor day to nextDueDate. until includes the boundary date. limit must be an integer from 0 through 100, otherwise throw. Validate dueDate and recurrence even when limit is zero or count is one. Reject an until date earlier than dueDate. Do not mutate recurrence. Use the existing recurrence helpers and their errors. A daily interval of 2 starting 2026-01-01 with limit 2 returns [\"2026-01-03\", \"2026-01-05\"]. Run appropriate existing checks. Final response: summarize files, actual checks and any unverified item.\n\nBefore implementing, make a boundary checklist from the SAME contract: validation before early return, anchor preservation, count includes the supplied occurrence, inclusive until. Check those cases before reporting completion. Do not read any files outside this workspace."
+  },
+  "trials_per_condition": 3,
+  "per_trial_timeout_seconds": 180,
+  "max_budget_usd_per_trial": 1,
+  "order": [
+    "A1",
+    "B1",
+    "B2",
+    "A2",
+    "A3",
+    "B3"
+  ],
+  "human_calibration": false
+}
