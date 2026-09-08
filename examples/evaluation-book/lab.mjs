@@ -5,6 +5,7 @@ import {resolve,join,dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
+import {readGradeProcess} from './grade-process.mjs';
 const here=dirname(fileURLToPath(import.meta.url));
 const base=resolve(process.argv[2]||'.');
 const out=resolve(process.argv[3]||'evaluation-results');
@@ -36,7 +37,7 @@ try {
   for(const version of Object.keys(casePaths)){
    const casePath=casePaths[version];
    const p=spawnSync(process.execPath,[join(here,'grade.mjs'),path,casePath],{encoding:'utf8',timeout:10000});
-   let grade;try{grade=JSON.parse(p.stdout)}catch(e){grade={status:'infrastructure_error',error:String(e),stderr:p.stderr,processError:String(p.error??'')}}
+   const grade=readGradeProcess(p);
    results.push({variant,version,expectedAccept:variant==='correct',...grade});
   }
  }
@@ -45,12 +46,12 @@ try {
  const path=join(work,'alternative.ts');await writeFile(path,alternative);
  const casePath=join(work,'cases.json'); await writeFile(casePath,JSON.stringify(extended));
  const p=spawnSync(process.execPath,[join(here,'grade.mjs'),path,casePath],{encoding:'utf8',timeout:10000});
- results.push({variant:'correct-alternative',version:'v2',expectedAccept:true,...JSON.parse(p.stdout)});
+ results.push({variant:'correct-alternative',version:'v2',expectedAccept:true,...readGradeProcess(p)});
  const matrix=Object.fromEntries(['v1','v2'].map(version=>{
-  const rows=results.filter(r=>r.version===version);return [version,{good:rows.filter(r=>r.expectedAccept).length,bad:rows.filter(r=>!r.expectedAccept).length,falseAccept:rows.filter(r=>!r.expectedAccept&&r.status==='pass').length,falseReject:rows.filter(r=>r.expectedAccept&&r.status!=='pass').length}];
+  const rows=results.filter(r=>r.version===version);return [version,{good:rows.filter(r=>r.expectedAccept).length,bad:rows.filter(r=>!r.expectedAccept).length,falseAccept:rows.filter(r=>!r.expectedAccept&&r.status==='pass').length,falseReject:rows.filter(r=>r.expectedAccept&&r.status==='fail').length,unconfirmed:rows.filter(r=>!['pass','fail'].includes(r.status)).length}];
  }));
  const result={kind:'deterministic_fault_injection_not_agent_trials',node:process.version,case_sha256:createHash('sha256').update(JSON.stringify(extended)).digest('hex'),results,matrix};
  await writeFile(join(out,'grader-report.json'),JSON.stringify(result,null,2)+'\n');
  process.stdout.write(JSON.stringify(matrix,null,2)+'\n');
- if(matrix.v1.falseAccept!==6||matrix.v2.falseAccept!==0||matrix.v2.falseReject!==0)process.exitCode=1;
+ if(results.some(r=>!['pass','fail'].includes(r.status))||matrix.v1.falseAccept!==6||matrix.v2.falseAccept!==0||matrix.v2.falseReject!==0)process.exitCode=1;
 }finally{await rm(work,{recursive:true,force:true})}

@@ -1,0 +1,19 @@
+{
+  "exit": 1,
+  "matrix": {
+    "v1": {
+      "good": 1,
+      "bad": 6,
+      "falseAccept": 6,
+      "falseReject": 0,
+      "unconfirmed": 0
+    },
+    "v2": {
+      "good": 2,
+      "bad": 6,
+      "falseAccept": 0,
+      "falseReject": 0,
+      "unconfirmed": 6
+    }
+  }
+}

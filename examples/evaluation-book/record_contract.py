@@ -3,6 +3,7 @@ import json
 
 
 def parse_response(raw):
+    """Return the CLI response and an error unless success is explicit."""
     try:
         response = json.loads(raw)
     except (ValueError, TypeError) as error:
@@ -15,6 +16,7 @@ def parse_response(raw):
 
 
 def accepts(response_error, timed_out, exit_code, changed, checks):
+    """Require successful execution, unchanged protected files and all checks."""
     required = {'grade', 'typecheck', 'regression', 'lint'}
     return (response_error is None and not timed_out and exit_code == 0
             and not changed and set(checks) == required

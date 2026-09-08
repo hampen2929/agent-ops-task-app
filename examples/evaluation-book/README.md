@@ -49,3 +49,9 @@ python3 -m unittest discover -s examples/evaluation-book -p test_record_contract
 ```
 
 独立AIレビューで発見したCLI応答解析失敗時の誤受け入れを修正。保存済み6応答の判定は変わらない（evidence/acceptance-v2-audit.json）。初回実験のランナーをevidence/runner-v1.py.txtに保持。最新版ランナーで新しいライブ試行は実施せず、保存応答の再判定と異常系の単体テストを行った。
+
+## 評価プロセスの異常経路
+
+`node --test examples/evaluation-book/verify-grade-process.mjs` で4件のテストを実行する。lab.mjsは終了コードと構造化結果の整合を確認し、基盤障害を誤不合格へ混ぜずunconfirmedへ集計する。未確認が1件でもあれば非ゼロ終了する。既存の保存レポートは当時の形式のまま保持し、新しい実行ではunconfirmedが追加される。
+
+ライブランナーの既存recordスキップは安全な再開機構ではない。experiment.jsonは開始時に更新され、未完成のworkspaceに古いファイルが残り得る。中断した出力は保持し、新しい出力ディレクトリでやり直す。

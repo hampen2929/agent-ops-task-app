@@ -15,6 +15,7 @@ jobs:
           node-version: "24"
           cache: npm
       - run: python3 -m unittest discover -s examples/evaluation-book -p test_record_contract.py
+      - run: node --test examples/evaluation-book/verify-grade-process.mjs
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
